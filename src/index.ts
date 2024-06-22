@@ -1,5 +1,5 @@
 import axios from 'axios';
-import GetAccessToken from './getAccessToken';
+import GetAccessToken from './getGoogleAccessToken';
 
 interface ServiceAccountKey {
   client_email: string;
