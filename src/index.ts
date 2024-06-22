@@ -20,23 +20,23 @@ class GCloudLogger {
   }
 
   private async getAccessToken(): Promise<string> {
-  //   if (this.token && this.tokenExpiry && this.tokenExpiry > Date.now()) {
-  //     return this.token;
-  //   }
+    if (this.token && this.tokenExpiry && this.tokenExpiry > Date.now()) {
+      return this.token;
+    }
 
-  //   const keyFile: ServiceAccountKey = JSON.parse(this.keyfile);
+    const keyFile: ServiceAccountKey = JSON.parse(this.keyfile);
 
-  //   const iat = Math.floor(Date.now() / 1000);
-  //   const exp = iat + 3600; // 1 hour expiry
+    const iat = Math.floor(Date.now() / 1000);
+    const exp = iat + 3600; // 1 hour expiry
 
-  //   const payload = {
-  //     iss: keyFile.client_email,
-  //     sub: keyFile.client_email,
-  //     scope: 'https://www.googleapis.com/auth/logging.write',
-  //     aud: 'https://oauth2.googleapis.com/token',
-  //     iat: iat,
-  //     exp: exp,
-  //   };
+    const payload = {
+      iss: keyFile.client_email,
+      sub: keyFile.client_email,
+      scope: 'https://www.googleapis.com/auth/logging.write',
+      aud: 'https://oauth2.googleapis.com/token',
+      iat: iat,
+      exp: exp,
+    };
 
   //   const token = jwt.sign(payload, keyFile.private_key, { algorithm: 'RS256' });
 
