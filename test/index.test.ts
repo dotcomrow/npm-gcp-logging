@@ -1,4 +1,4 @@
-import GCloudLogger from '../dist/index';
+import GCloudLogger from '../src/index';
 import * as fs from 'fs';
 
 const projectId = 'gcploggingproject-427121'; // replace with your GCP project ID    
