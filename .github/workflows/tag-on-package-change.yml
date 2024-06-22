@@ -19,6 +19,8 @@ jobs:
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           increment_version() {
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
            local usage=" USAGE: $FUNCNAME [-l] [-t] <version> [<position>] [<leftmost>]
                    -l : remove leading zeros
                    -t : drop trailing zeros
