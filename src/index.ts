@@ -19,7 +19,7 @@ class GCloudLogger {
     this.tokenExpiry = null;
   }
 
-  // private async getAccessToken(): Promise<string> {
+  private async getAccessToken(): Promise<string> {
   //   if (this.token && this.tokenExpiry && this.tokenExpiry > Date.now()) {
   //     return this.token;
   //   }
@@ -48,8 +48,8 @@ class GCloudLogger {
   //   this.token = response.data.access_token;
   //   this.tokenExpiry = exp * 1000;
 
-  //   return this.token;
-  // }
+    return this.token;
+  }
 
   public async logEntry(logName: string, severity: string, message: string): Promise<void> {
     const url = `https://logging.googleapis.com/v2/entries:write`;
