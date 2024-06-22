@@ -1,6 +1,6 @@
 {
     "name": "npm-gcp-logging",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "A simple package to log entries to Google Cloud Logging",
     "main": "dist/index.js",
     "exports": "./dist/index.js",
