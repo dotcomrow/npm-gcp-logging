@@ -1,5 +1,4 @@
 import axios from 'axios';
-import * as fs from 'fs/promises';
 import jwt from 'jsonwebtoken';
 
 interface ServiceAccountKey {
@@ -9,13 +8,13 @@ interface ServiceAccountKey {
 
 class GCloudLogger {
   private projectId: string;
-  private keyFilePath: string;
+  private keyfile: string;
   private token: string;
   private tokenExpiry: number | null;
 
   constructor(projectId: string, keyFilePath: string) {
     this.projectId = projectId;
-    this.keyFilePath = keyFilePath;
+    this.keyfile = keyFilePath;
     this.token = '';
     this.tokenExpiry = null;
   }
@@ -25,8 +24,7 @@ class GCloudLogger {
       return this.token;
     }
 
-    const keyFileContent = await fs.readFile(this.keyFilePath, 'utf8');
-    const keyFile: ServiceAccountKey = JSON.parse(keyFileContent);
+    const keyFile: ServiceAccountKey = JSON.parse(this.keyfile);
 
     const iat = Math.floor(Date.now() / 1000);
     const exp = iat + 3600; // 1 hour expiry
