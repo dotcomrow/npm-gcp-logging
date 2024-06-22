@@ -8,6 +8,6 @@ const logger = new GCloudLogger(projectId, keyFileContent);
 
 const logName = 'my-log';
 const severity = 'INFO';
-const message = 'This is a log message test log10.';
+const message = 'This is a log message test log11.';
 
 logger.logEntry(logName, severity, message);
