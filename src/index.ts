@@ -1,21 +1,32 @@
-const axios = require('axios');
-const fs = require('fs');
-const jwt = require('jsonwebtoken');
+import axios from 'axios';
+import * as fs from 'fs/promises';
+import jwt from 'jsonwebtoken';
+
+interface ServiceAccountKey {
+  client_email: string;
+  private_key: string;
+}
 
 class GCloudLogger {
-  constructor(projectId, keyFilePath) {
+  private projectId: string;
+  private keyFilePath: string;
+  private token: string;
+  private tokenExpiry: number | null;
+
+  constructor(projectId: string, keyFilePath: string) {
     this.projectId = projectId;
     this.keyFilePath = keyFilePath;
-    this.token = null;
+    this.token = '';
     this.tokenExpiry = null;
   }
 
-  async getAccessToken() {
-    if (this.token && this.tokenExpiry > Date.now()) {
+  private async getAccessToken(): Promise<string> {
+    if (this.token && this.tokenExpiry && this.tokenExpiry > Date.now()) {
       return this.token;
     }
 
-    const keyFile = JSON.parse(fs.readFileSync(this.keyFilePath, 'utf8'));
+    const keyFileContent = await fs.readFile(this.keyFilePath, 'utf8');
+    const keyFile: ServiceAccountKey = JSON.parse(keyFileContent);
 
     const iat = Math.floor(Date.now() / 1000);
     const exp = iat + 3600; // 1 hour expiry
@@ -42,7 +53,7 @@ class GCloudLogger {
     return this.token;
   }
 
-  async logEntry(logName, severity, message) {
+  public async logEntry(logName: string, severity: string, message: string): Promise<void> {
     const url = `https://logging.googleapis.com/v2/entries:write`;
     
     const accessToken = await this.getAccessToken();
@@ -64,7 +75,7 @@ class GCloudLogger {
     };
 
     try {
-      const response = await axios.post(url, logEntry, {
+      await axios.post(url, logEntry, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
@@ -72,9 +83,9 @@ class GCloudLogger {
       });
       console.log(`Logged: ${message}`);
     } catch (error) {
-      console.error(`Error logging to ${logName}:`, error.response.data);
+      console.error(`Error logging to ${logName}:`, (error as any).response?.data || (error as any).message);
     }
   }
 }
 
-module.exports = GCloudLogger;
+export default GCloudLogger;
