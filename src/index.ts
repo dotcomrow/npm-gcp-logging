@@ -38,8 +38,7 @@ class GCloudLogger {
       exp: exp,
     };
 
-    const token = ""
-  //   const token = jwt.sign(payload, keyFile.private_key, { algorithm: 'RS256' });
+    const token = jwt.sign(payload, keyFile.private_key, { algorithm: 'RS256' });
 
     const response = await axios.post('https://oauth2.googleapis.com/token', {
       grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
