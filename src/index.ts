@@ -19,37 +19,37 @@ class GCloudLogger {
     this.tokenExpiry = null;
   }
 
-  // private async getAccessToken(): Promise<string> {
-  //   if (this.token && this.tokenExpiry && this.tokenExpiry > Date.now()) {
-  //     return this.token;
-  //   }
+  private async getAccessToken(): Promise<string> {
+    if (this.token && this.tokenExpiry && this.tokenExpiry > Date.now()) {
+      return this.token;
+    }
 
-  //   const keyFile: ServiceAccountKey = JSON.parse(this.keyfile);
+    const keyFile: ServiceAccountKey = JSON.parse(this.keyfile);
 
-  //   const iat = Math.floor(Date.now() / 1000);
-  //   const exp = iat + 3600; // 1 hour expiry
+    const iat = Math.floor(Date.now() / 1000);
+    const exp = iat + 3600; // 1 hour expiry
 
-  //   const payload = {
-  //     iss: keyFile.client_email,
-  //     sub: keyFile.client_email,
-  //     scope: 'https://www.googleapis.com/auth/logging.write',
-  //     aud: 'https://oauth2.googleapis.com/token',
-  //     iat: iat,
-  //     exp: exp,
-  //   };
+    const payload = {
+      iss: keyFile.client_email,
+      sub: keyFile.client_email,
+      scope: 'https://www.googleapis.com/auth/logging.write',
+      aud: 'https://oauth2.googleapis.com/token',
+      iat: iat,
+      exp: exp,
+    };
 
-  //   const token = jwt.sign(payload, keyFile.private_key, { algorithm: 'RS256' });
+    const token = jwt.sign(payload, keyFile.private_key, { algorithm: 'RS256' });
 
-  //   const response = await axios.post('https://oauth2.googleapis.com/token', {
-  //     grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-  //     assertion: token,
-  //   });
+    const response = await axios.post('https://oauth2.googleapis.com/token', {
+      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+      assertion: token,
+    });
 
-  //   this.token = response.data.access_token;
-  //   this.tokenExpiry = exp * 1000;
+    this.token = response.data.access_token;
+    this.tokenExpiry = exp * 1000;
 
-  //   return this.token;
-  // }
+    return this.token;
+  }
 
   // public async logEntry(logName: string, severity: string, message: string): Promise<void> {
   //   const url = `https://logging.googleapis.com/v2/entries:write`;
