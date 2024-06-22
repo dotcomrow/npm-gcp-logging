@@ -95,6 +95,6 @@ jobs:
           echo $(jq --arg newval "$NEW_VERSION" '.version |= $newval' package.json) > package.json
           echo $(jq --arg newval "$NEW_VERSION" '.version |= $newval' package-lock.json) > package-lock.json
 
-          git commit -a
+          git commit -a -m "Bump version to $NEW_VERSION"
           git commit -m "performing update"
           git push
