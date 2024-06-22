@@ -8,19 +8,14 @@ permissions: write-all
 jobs:
   tag-npm-release:
     name: Tag new npm package releases
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
 
     steps:
       - uses: actions/checkout@v3
       - run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-      - run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           increment_version() {
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
            local usage=" USAGE: $FUNCNAME [-l] [-t] <version> [<position>] [<leftmost>]
                    -l : remove leading zeros
                    -t : drop trailing zeros
@@ -81,9 +76,6 @@ jobs:
            IFS=IFSbak
            return 0
           }
-
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
 
           sudo apt-get -qq install -y jq
           
