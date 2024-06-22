@@ -13,6 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           increment_version() {
            local usage=" USAGE: $FUNCNAME [-l] [-t] <version> [<position>] [<leftmost>]
                    -l : remove leading zeros
@@ -74,9 +76,6 @@ jobs:
            IFS=IFSbak
            return 0
           }
-
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
 
           sudo apt-get -qq install -y jq
           
