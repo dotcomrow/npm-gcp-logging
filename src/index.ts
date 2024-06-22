@@ -1,22 +1,13 @@
 import axios from 'axios';
 import GetAccessToken from './getGoogleAccessToken';
 
-interface ServiceAccountKey {
-  client_email: string;
-  private_key: string;
-}
-
 class GCloudLogger {
   private projectId: string;
   private keyfile: string;
-  private token: string;
-  private tokenExpiry: number | null;
 
-  constructor(projectId: string, keyFilePath: string) {
+  public constructor(projectId: string, keyFilePath: string) {
     this.projectId = projectId;
     this.keyfile = keyFilePath;
-    this.token = '';
-    this.tokenExpiry = null;
   }
 
   public async logEntry(logName: string, severity: string, message: string): Promise<void> {
