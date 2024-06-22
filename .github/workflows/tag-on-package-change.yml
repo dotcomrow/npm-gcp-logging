@@ -75,9 +75,11 @@ jobs:
            return 0
           }
 
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+
           sudo apt-get -qq install -y jq
-          git config --global user.email "you@example.com"
-          git config --global user.name "Your Name"
+          
           VERSION="$(cat package.json | jq -r '.version')"
           NEW_VERSION=$(increment_version $VERSION)
           echo "Version detected -> $VERSION <- Incrementing to -> $NEW_VERSION"
