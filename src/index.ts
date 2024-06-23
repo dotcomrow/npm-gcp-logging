@@ -3,7 +3,7 @@ import GetAccessToken from './getGoogleAccessToken';
 import fetchAdapter from "@haverstack/axios-fetch-adapter";
 
 class GCloudLogger {
-  public static async logEntry(projectId: string, keyfile: string, logName: string, severity: string, message: string) {
+  public static async logEntry(projectId: string, keyfile: string, logName: string, logEntries: Array<any>) {
     const url = `https://logging.googleapis.com/v2/entries:write`;
     
     const scope = 'https://www.googleapis.com/auth/logging.write'; // replace with the desired scope
@@ -17,15 +17,16 @@ class GCloudLogger {
       resource: {
         type: 'global',
       },
-      entries: [
-        {
-          severity: severity,
-          // textPayload: message,
-          jsonPayload: {
-            message: message
-          }
-        },
-      ],
+      entries: logEntries
+      // [
+      //   {
+      //     severity: severity,
+      //     // textPayload: message,
+      //     jsonPayload: {
+      //       message: message
+      //     }
+      //   },
+      // ],
     };
 
     try {
@@ -38,7 +39,6 @@ class GCloudLogger {
           'Content-Type': 'application/json',
         },
       });
-      console.log(`Logged: ${message}`);
     } catch (error) {
       console.error(`Error logging to ${logName}:`, (error as any).response?.data || (error as any).message);
     }
