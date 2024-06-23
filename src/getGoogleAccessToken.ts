@@ -1,12 +1,12 @@
 import axios from 'axios';
-import * as crypto from 'crypto';
+import { JWTHeaderParameters, JWTPayload, SignJWT, importPKCS8 } from 'jose';
 
 interface ServiceAccountKey {
   client_email: string;
   private_key: string;
 }
 
-class GetAccessToken {
+class GCloudAuth {
   private projectId: string;
   private keyFileContent: string;
   private token: string;
@@ -19,21 +19,11 @@ class GetAccessToken {
     this.tokenExpiry = null;
   }
 
-  private base64UrlEncode(obj: Object): string {
-    return Buffer.from(JSON.stringify(obj))
-      .toString('base64')
-      .replace(/=/g, '')
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_');
-  }
-
-  private createJWT(header: Object, payload: Object, privateKey: string): string {
-    const encodedHeader = this.base64UrlEncode(header);
-    const encodedPayload = this.base64UrlEncode(payload);
-    const signatureInput = `${encodedHeader}.${encodedPayload}`;
-    const signature = crypto.createSign('RSA-SHA256').update(signatureInput).sign(privateKey, 'base64');
-    const encodedSignature = signature.replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
-    return `${signatureInput}.${encodedSignature}`;
+  private async createJWT(header: JWTHeaderParameters, payload: JWTPayload, privateKey: string): Promise<string> {
+    const key = await importPKCS8(privateKey, 'RS256');
+    return await new SignJWT(payload)
+      .setProtectedHeader(header)
+      .sign(key);
   }
 
   public async getAccessToken(scope: string): Promise<string> {
@@ -41,16 +31,18 @@ class GetAccessToken {
       return this.token;
     }
 
-    
     const keyFile: ServiceAccountKey = JSON.parse(this.keyFileContent);
 
     const iat = Math.floor(Date.now() / 1000);
     const exp = iat + 3600; // 1 hour expiry
 
-    const header = {
+    const header: JWTHeaderParameters = {
       alg: 'RS256',
       typ: 'JWT',
     };
+    
+    // Add the 'alg' property to the header object
+    header.alg = 'RS256';
 
     const payload = {
       iss: keyFile.client_email,
@@ -61,7 +53,7 @@ class GetAccessToken {
       exp: exp,
     };
 
-    const jwt = this.createJWT(header, payload, keyFile.private_key);
+    const jwt = await this.createJWT(header, payload, keyFile.private_key);
 
     const response = await axios.post('https://oauth2.googleapis.com/token', {
       grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
@@ -75,4 +67,4 @@ class GetAccessToken {
   }
 }
 
-export default GetAccessToken;
+export default GCloudAuth;
