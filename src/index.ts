@@ -1,5 +1,6 @@
 import axios from 'axios';
 import GetAccessToken from './getGoogleAccessToken';
+import fetchAdapter from "@haverstack/axios-fetch-adapter";
 
 class GCloudLogger {
   public static async logEntry(projectId: string, keyfile: string, logName: string, severity: string, message: string) {
@@ -28,7 +29,10 @@ class GCloudLogger {
     };
 
     try {
-      await axios.post(url, logEntry, {
+      const client = axios.create({
+        adapter: fetchAdapter
+      });
+      await client.post(url, logEntry, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
