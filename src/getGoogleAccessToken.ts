@@ -1,6 +1,5 @@
 import axios from 'axios';
 import * as crypto from 'crypto';
-import { Buffer } from 'buffer';
 
 interface ServiceAccountKey {
   client_email: string;
