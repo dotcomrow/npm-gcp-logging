@@ -9,4 +9,14 @@ const logName = 'my-log';
 const severity = 'INFO';
 const message = 'This is a log message test log16.';
 
-GCloudLogger.logEntry(projectId, keyFileContent, logName, severity, message);
+GCloudLogger.logEntry(projectId, keyFileContent, logName, 
+    [
+        {
+          severity: severity,
+          // textPayload: message,
+          jsonPayload: {
+            message: message
+          }
+        },
+      ],
+);

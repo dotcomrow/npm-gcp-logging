@@ -18,15 +18,6 @@ class GCloudLogger {
         type: 'global',
       },
       entries: logEntries
-      // [
-      //   {
-      //     severity: severity,
-      //     // textPayload: message,
-      //     jsonPayload: {
-      //       message: message
-      //     }
-      //   },
-      // ],
     };
 
     try {
