@@ -7,6 +7,6 @@ const keyFileContent = fs.readFileSync(keyFilePath, 'utf8');
 
 const logName = 'my-log';
 const severity = 'INFO';
-const message = 'This is a log message test log14.';
+const message = 'This is a log message test log15.';
 
 GCloudLogger.logEntry(projectId, keyFileContent, logName, severity, message);
