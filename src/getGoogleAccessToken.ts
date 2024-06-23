@@ -1,4 +1,5 @@
 import axios from 'axios';
+import fetchAdapter from "@haverstack/axios-fetch-adapter";
 import { JWTHeaderParameters, JWTPayload, SignJWT, importPKCS8 } from 'jose';
 
 interface ServiceAccountKey {
@@ -55,7 +56,10 @@ class GCloudAuth {
 
     const jwt = await this.createJWT(header, payload, keyFile.private_key);
 
-    const response = await axios.post('https://oauth2.googleapis.com/token', {
+    const client = axios.create({
+      adapter: fetchAdapter
+    });
+    const response = await client.post('https://oauth2.googleapis.com/token', {
       grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
       assertion: jwt,
     });
