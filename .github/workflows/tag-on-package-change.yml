@@ -93,6 +93,6 @@ jobs:
           fi
           echo $(jq --arg newval "$NEW_VERSION" '.version |= $newval' package.json) > package.json
           echo $(jq --arg newval "$NEW_VERSION" '.version |= $newval' package-lock.json) > package-lock.json
-
+          sudo chmod -R 777 .git
           git commit -a -m "Bump version to $NEW_VERSION"
           git push
