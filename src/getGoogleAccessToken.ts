@@ -8,13 +8,11 @@ interface ServiceAccountKey {
 }
 
 class GCloudAuth {
-  private projectId: string;
   private keyFileContent: string;
   private token: string;
   private tokenExpiry: number | null;
 
-  constructor(projectId: string, keyFileContent: string) {
-    this.projectId = projectId;
+  constructor(keyFileContent: string) {
     this.keyFileContent = keyFileContent;
     this.token = '';
     this.tokenExpiry = null;

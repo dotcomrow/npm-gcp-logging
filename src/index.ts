@@ -9,7 +9,7 @@ class GCloudLogger {
     const scope = 'https://www.googleapis.com/auth/logging.write'; // replace with the desired scope
 
 
-    const gcloudAuth = new GetAccessToken(projectId, keyfile);
+    const gcloudAuth = new GetAccessToken(keyfile);
     const accessToken = await gcloudAuth.getAccessToken(scope);
 
     const logEntry = {
