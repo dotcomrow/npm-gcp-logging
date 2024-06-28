@@ -2,7 +2,7 @@ import axios from 'axios';
 import fetchAdapter from "@haverstack/axios-fetch-adapter";
 
 class GCloudLogger {
-  public static async logEntry(projectId: string, accessToken: string, keyfile: string, logName: string, logEntries: Array<any>) {
+  public static async logEntry(projectId: string, accessToken: string, logName: string, logEntries: Array<any>) {
     const url = `https://logging.googleapis.com/v2/entries:write`;    
     
     const logEntry = {
