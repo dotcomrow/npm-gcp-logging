@@ -1,4 +1,5 @@
-import GCloudLogger from '../src/index';
+import GCloudLogger from '../src/GCPLogger.js';
+import { GCPAccessToken } from 'npm-gcp-token';
 import * as fs from 'fs';
 
 const projectId = 'gcploggingproject-427121'; // replace with your GCP project ID    
@@ -9,7 +10,10 @@ const logName = 'my-log';
 const severity = 'INFO';
 const message = 'This is a log message test log17.';
 
-GCloudLogger.logEntry(projectId, keyFileContent, logName, 
+var accessToken = new GCPAccessToken(keyFileContent);
+var token = await accessToken.getAccessToken('https://www.googleapis.com/auth/logging.write');
+
+GCloudLogger.logEntry(projectId, token.access_token, logName, 
     [
         {
           severity: severity,
